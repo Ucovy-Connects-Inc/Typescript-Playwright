@@ -1,0 +1,36 @@
+{
+  "name": "workspace",
+  "version": "1.0.0",
+  "description": "Playwright TypeScript automation for LambdaTest eCommerce Playground",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "test:ui": "npx playwright test --ui",
+    "test:chrome": "npx playwright test --project=chromium",
+    "test:firefox": "npx playwright test --project=firefox",
+    "test:webkit": "npx playwright test --project=webkit",
+    "test:registration": "npx playwright test TC_ADV_001",
+    "test:cart": "npx playwright test TC_ADV_002",
+    "test:api": "npx playwright test TC_ADV_003",
+    "test:responsive": "npx playwright test TC_ADV_004",
+    "report": "npx playwright show-report",
+    "trace": "npx playwright show-trace"
+  },
+  "keywords": [
+    "playwright",
+    "typescript",
+    "automation",
+    "testing",
+    "e2e"
+  ],
+  "author": "Your Name",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.0",
+    "allure-playwright": "^2.10.0"
+  }
+}
+
