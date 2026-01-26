@@ -1,5 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
-
+const enableJiraReporter = process.env.ENABLE_JIRA || 'true';
+process.env.ENABLE_JIRA = enableJiraReporter;
 export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
@@ -9,12 +10,13 @@ export default defineConfig({
   reporter: [
     ['html', { outputFolder: 'playwright-report' }],
     ['json', { outputFile: 'test-results/results.json' }],
-    ['list'],
-    ['allure-playwright', { outputFolder: 'allure-results' }]
+    ['list',{}],
+    ['allure-playwright', { outputFolder: 'allure-results' }],
+    ['./dist/utils/jiraReporter.js']
   ],
   use: {
-    baseURL: 'https://ecommerce-playground.lambdatest.io',
-    trace: 'on-first-retry',
+    baseURL: 'https://www.delta.com/',
+    trace: 'on-all-retries',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
     actionTimeout: 30000,
