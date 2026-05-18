@@ -23,7 +23,7 @@ export class HomePage extends BasePage {
   }
 
   async open(): Promise<void> {
-    await this.navigate(Config.BASE_URL);
+    await this.navigate(Config.baseURL);
   }
 
   async clickMyAccountDropdown(): Promise<void> {
