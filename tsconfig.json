@@ -14,6 +14,8 @@
     "types": ["node", "@playwright/test"],
     "baseUrl": ".",
     "paths": {
+      "@bdd/*": ["src/bdd/*"],
+      "@components/*": ["src/components/*"],
       "@pages/*": ["src/pages/*"],
       "@utils/*": ["src/utils/*"],
       "@config/*": ["src/config/*"]

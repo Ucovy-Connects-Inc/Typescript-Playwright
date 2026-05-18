@@ -36,3 +36,4 @@ npm-debug.log*
 
 # Playwright
 playwright/.cache/
+.features-gen/

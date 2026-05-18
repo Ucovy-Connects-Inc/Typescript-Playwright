@@ -1,3 +1,52 @@
+# Playwright BDD Framework with Unified Component and Regression Execution
+
+This project now supports a **BDD-based Playwright framework** that runs **component-level** and **regression** scenarios in one execution flow using **Gherkin feature files**, **shared step definitions**, **reusable components/page objects**, and **environment-driven configuration**.
+
+## Unified BDD workflow
+
+```bash
+npm run test:unified
+```
+
+Helpful variants:
+
+- `npm run test:component` - runs `@component` scenarios only
+- `npm run test:regression` - runs `@regression` scenarios only
+- `npm run test:headed` - runs the same generated BDD suite in headed mode
+
+## BDD framework structure
+
+```text
+tests/
+  features/
+    component/
+    regression/
+  steps/
+src/
+  bdd/
+  components/
+  config/
+  pages/
+```
+
+Key implementation points:
+
+- Feature files live under `tests/features/**/*.feature`
+- Step definitions live under `tests/steps/**/*.ts`
+- `playwright-bdd` generates runnable Playwright tests before execution
+- `playwright.config.ts` now points only to generated BDD tests, so legacy demo specs do not affect the unified suite
+- Jira reporter loading is conditional, so clean checkouts do not fail when `dist/utils/jiraReporter.js` has not been built yet
+
+## Environment configuration
+
+The framework reads configuration from `.env` / environment variables:
+
+- `TEST_ENV` selects `local`, `dev`, `qa`, or `prod`
+- `BASE_URL` and per-environment base URLs control the target application
+- reusable credential defaults can be supplied for scenario data
+
+---
+
 # Playwright Jira Reporter (Auto Bug Creation)
 
 This project includes a **custom Playwright reporter** that automatically creates **Jira Bug tickets** when a test fails.
