@@ -20,6 +20,16 @@ const reporters: [string, Record<string, unknown>?][] = [
   ['allure-playwright', { outputFolder: 'allure-results' }],
 ];
 
+if (Config.enableExecutionSummary) {
+  reporters.push([
+    path.resolve(__dirname, 'src', 'utils', 'ExecutionSummaryReporter.ts'),
+    {
+      jsonOutputFile: Config.executionSummaryJson,
+      markdownOutputFile: Config.executionSummaryMarkdown,
+    },
+  ]);
+}
+
 if (enableJiraReporter === 'true' && fs.existsSync(jiraReporterPath)) {
   reporters.push([jiraReporterPath]);
 }
