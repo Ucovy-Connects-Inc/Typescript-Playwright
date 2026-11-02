@@ -27,7 +27,10 @@ export class ProductListingPage extends BasePage {
   }
 
   async addFirstProductToCart(): Promise<void> {
-    await this.click(this.addToCartButtons.first());
+    const firstProduct = this.productItems.first();
+    await firstProduct.scrollIntoViewIfNeeded();
+    await firstProduct.hover();
+    await firstProduct.getByRole('button', { name: 'Add to Cart' }).click({ force: true });
     await this.page.waitForTimeout(1000);
   }
 
