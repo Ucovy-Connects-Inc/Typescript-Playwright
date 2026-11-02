@@ -1,5 +1,11 @@
-import { Page, Locator } from '@playwright/test';
+import { Locator, Page } from '@playwright/test';
+import { Config } from '../config/Config';
 import { Logger } from '../utils/Logger';
+
+export type LocatorOption = {
+  locator: Locator;
+  description: string;
+};
 
 export class BasePage {
   protected page: Page;
@@ -8,7 +14,7 @@ export class BasePage {
     this.page = page;
   }
 
-    async navigate(url: string): Promise<void> {
+  async navigate(url: string): Promise<void> {
     Logger.info(`Navigating to: ${url}`);
     await this.page.goto(url);
     await this.page.waitForLoadState('domcontentloaded');
@@ -53,5 +59,49 @@ export class BasePage {
 
   async getCurrentUrl(): Promise<string> {
     return this.page.url();
+  }
+
+  protected async clickAny(
+    options: LocatorOption[],
+    actionName: string,
+    timeout: number = Config.TIMEOUT.ELEMENT,
+  ): Promise<void> {
+    const locator = await this.resolveVisibleLocator(options, actionName, timeout);
+    await locator.click();
+  }
+
+  protected async fillAny(
+    options: LocatorOption[],
+    text: string,
+    actionName: string,
+    timeout: number = Config.TIMEOUT.ELEMENT,
+  ): Promise<void> {
+    const locator = await this.resolveVisibleLocator(options, actionName, timeout);
+    await locator.clear();
+    await locator.fill(text);
+  }
+
+  protected async resolveVisibleLocator(
+    options: LocatorOption[],
+    actionName: string,
+    timeout: number = Config.TIMEOUT.ELEMENT,
+  ): Promise<Locator> {
+    const failures: string[] = [];
+
+    for (let index = 0; index < options.length; index += 1) {
+      const option = options[index];
+
+      try {
+        await option.locator.first().waitFor({ state: 'visible', timeout });
+        if (index > 0) {
+          Logger.warn(`Fallback locator used for ${actionName}: ${option.description}`);
+        }
+        return option.locator.first();
+      } catch {
+        failures.push(option.description);
+      }
+    }
+
+    throw new Error(`Unable to resolve locator for ${actionName}. Tried: ${failures.join(', ')}`);
   }
 }

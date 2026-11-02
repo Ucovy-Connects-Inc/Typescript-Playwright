@@ -28,9 +28,26 @@ export class ProductListingPage extends BasePage {
 
   async addFirstProductToCart(): Promise<void> {
     const firstProduct = this.productItems.first();
+    await this.waitForElement(firstProduct);
     await firstProduct.scrollIntoViewIfNeeded();
     await firstProduct.hover();
-    await firstProduct.getByRole('button', { name: 'Add to Cart' }).click({ force: true });
+    await this.clickAny(
+      [
+        {
+          locator: firstProduct.getByRole('button', { name: /add to cart/i }),
+          description: 'add to cart button by role inside first product',
+        },
+        {
+          locator: firstProduct.locator('button:has-text("Add to Cart")'),
+          description: 'legacy add to cart button text inside first product',
+        },
+        {
+          locator: firstProduct.locator('button[title="Add to Cart"]'),
+          description: 'add to cart button by title inside first product',
+        },
+      ],
+      'add first product to cart',
+    );
     await this.page.waitForTimeout(1000);
   }
 

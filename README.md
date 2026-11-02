@@ -36,6 +36,7 @@ Key implementation points:
 - `playwright-bdd` generates runnable Playwright tests before execution
 - `playwright.config.ts` now points only to generated BDD tests, so legacy demo specs do not affect the unified suite
 - Jira reporter loading is conditional, so clean checkouts do not fail when `dist/utils/jiraReporter.js` has not been built yet
+- Execution summary reporting now writes JSON + Markdown metrics for flaky-test tracking and weekly status updates
 
 ## Environment configuration
 
@@ -44,6 +45,27 @@ The framework reads configuration from `.env` / environment variables:
 - `TEST_ENV` selects `local`, `dev`, `qa`, or `prod`
 - `BASE_URL` and per-environment base URLs control the target application
 - reusable credential defaults can be supplied for scenario data
+- `ENABLE_EXECUTION_SUMMARY` controls the built-in execution summary reporter
+- `EXECUTION_SUMMARY_JSON` and `EXECUTION_SUMMARY_MD` control summary output file locations
+
+## Stability enhancements
+
+- Core page interactions now use fallback locator strategies before failing, which makes common flows less brittle when markup or accessibility hooks shift.
+- Registration, login, header navigation, and add-to-cart flows now reuse the same resilient interaction layer for clearer diagnostics.
+
+## Execution analytics
+
+Every run can now emit:
+
+- `test-results/execution-summary.json` for machine-readable metrics
+- `test-results/execution-summary.md` for status-report and PR-friendly summaries
+
+The summary includes:
+
+- run timing and environment metadata
+- pass/fail/flaky totals
+- per-project breakdowns
+- top tags, slowest tests, and failure details
 
 ---
 

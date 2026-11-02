@@ -64,6 +64,7 @@ const environments: Record<TestEnvironmentName, EnvironmentConfig> = {
 export class Config {
   static readonly TIMEOUT = {
     SHORT: 5000,
+    ELEMENT: 10000,
     MEDIUM: 15000,
     LONG: 30000,
   };
@@ -94,5 +95,17 @@ export class Config {
 
   static get invalidUser(): UserCredentials {
     return this.environment.invalidUser;
+  }
+
+  static get enableExecutionSummary(): boolean {
+    return (process.env.ENABLE_EXECUTION_SUMMARY ?? 'true').toLowerCase() === 'true';
+  }
+
+  static get executionSummaryJson(): string {
+    return process.env.EXECUTION_SUMMARY_JSON || 'test-results/execution-summary.json';
+  }
+
+  static get executionSummaryMarkdown(): string {
+    return process.env.EXECUTION_SUMMARY_MD || 'test-results/execution-summary.md';
   }
 }
